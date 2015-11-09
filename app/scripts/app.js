@@ -1,34 +1,63 @@
-'use strict';
-
-/**
- * @ngdoc overview
- * @name phleepApp
- * @description
- * # phleepApp
- *
- * Main module of the application.
- */
-angular
-  .module('phleepApp', [
+(function () {
+    'use strict';
+ 
+    angular
+        .module('phleepApp', 
+          [
     'ngAnimate',
     'ngCookies',
     'ngResource',
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.sortable'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+    'ui.sortable',
+    'LocalStorageModule'
+    ])
+        .config(config, ['localStorageServiceProvider', function(localStorageServiceProvider){localStorageServiceProvider.setPrefix('ls');}])
+        .run(run);
+ 
+    config.$inject = ['$routeProvider', '$locationProvider'];
+    function config($routeProvider, $locationProvider) {
+        $routeProvider
+            .when('/', {
+                controller: 'MainCtrl',
+                templateUrl: 'views/main.html'
+            })
+ 
+            .when('/login', {
+                controller: 'LoginController',
+                templateUrl: 'views/login.html',
+                controllerAs: 'vm'
+            })
+ 
+            .when('/register', {
+                controller: 'RegisterController',
+                templateUrl: 'views/register.html',
+                controllerAs: 'vm'
+            })
+ 
+            .otherwise({ redirectTo: '/login' });
+    }
+ 
+    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
+    function run($rootScope, $location, $cookieStore, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookieStore.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
+ 
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            var loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !loggedIn) {
+                $location.path('/login');
+            }
+        });
+    }
+ 
+})();
+
+  //   )
+  // .config(config, ['localStorageServiceProvider', function(localStorageServiceProvider){localStorageServiceProvider.setPrefix('ls');}])

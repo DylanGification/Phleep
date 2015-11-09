@@ -32,15 +32,13 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">phleep</a>
+            <a class="navbar-brand" href="#/">Phleep</a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
             </ul>
           </div>
         </div>
@@ -50,14 +48,6 @@
     <div class="container">
     <div ng-view=""></div>
     </div>
-
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div>
-
-
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
@@ -82,13 +72,19 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/register.js"></script>
+        <script src="services/authentication.service.js"></script>
+        <script src="services/flash.service.js"></script>
+        <!-- Fake user service for demo that uses local storage -->
+    <script src="services/user.service.local-storage.js"></script>
         <!-- endbuild -->
 </body>
 </html>
