@@ -2,7 +2,7 @@
   "name": "phleep",
   "version": "0.0.0",
   "dependencies": {
-    "karma": "^4.3.0"
+    "karma": "^6.4.1"
   },
   "repository": {},
   "devDependencies": {
